@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My First OAuth2 App</title>
+</head>
+<body>
+	<div id="info">
+		Hello!
+	</div>
+	<a id="login" style="display: none;" href="your oauth2 url here">Identify Yourself</a>
+	<script>
+		window.onload = () => {
+			const match = window.location.hash.match(/access_token=(.+?)&token_type=(.+?)(?:&|$)/);
+
+			if (match) {
+				const [, accessToken, tokenType] = match;
+
+				fetch('https://discordapp.com/api/users/@me', {
+					headers: {
+						authorization: `${tokenType} ${accessToken}`
+					}
+				})
+					.then(res => res.json())
+					.then(response => {
+						const { username, discriminator } = response;
+						document.getElementById('info').innerText += ` ${username}#${discriminator}`;
+					})
+					.catch(console.error);
+
+			}
+			else {
+				document.getElementById('login').style.display = 'block';
+			}
+		}
+	</script>
+</body>
+</html>

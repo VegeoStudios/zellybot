@@ -1,0 +1,16 @@
+{
+  "name": "bro-zelly-bot",
+  "version": "1.0.0",
+  "description": "Zelly server custom bot",
+  "main": "index.js",
+  "dependencies": {
+    "better-sqlite-pool": "^0.2.0",
+    "canvas": "^2.0.1",
+    "chalk": "^2.4.2",
+    "discord.js": "^11.4.2",
+    "enmap": "^4.7.0",
+    "image-size": "^0.7.1",
+    "request": "^2.88.0",
+    "url": "^0.11.0"
+  }
+}
