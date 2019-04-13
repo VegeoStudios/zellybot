@@ -117,11 +117,11 @@ client.on('disconnect', () => {
 
 client.on('error', err => {
   console.log(err);
-  if (member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566376352522174484)) member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566376352522174484).send('ERROR:\n' + err);
+  if (member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890)) member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890).send('ERROR:\n' + err);
 });
 
 client.on('warn', w => {
-  if (member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566376352522174484)) member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566376352522174484).send('WARNING:\n' + w);
+  if (member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890)) member.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890).send('WARNING:\n' + w);
 });
 //#endregion
 
