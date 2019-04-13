@@ -106,7 +106,9 @@ function loadFiles() {
 }
 
 client.on('ready', () => {
-	console.log(chalk.black.bgGreen('BOT ONLINE'));
+    console.log(chalk.black.bgGreen('BOT ONLINE'));
+    const channel = client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566376352522174484);
+    if (channel) channel.send('BOT ONLINE');
 });
 
 client.on('disconnect', () => {
@@ -215,10 +217,3 @@ client.on('guildMemberAdd', member => {
   const channel1 = member.guild.channels.find(ch => ch.name === 'welcome');
   if (channel1) channel1.send(member + ' Welcome to BZG, aka Bro Zelly Gaming! <:BZGLOGOTEMPLATE:353915937822605312>\n\nBe sure you go by #rules-and-information to learn how we do things around here. React in each category for the roles you want.  If you ever wish to leave a role, just un-click the reaction. Come say hello in #general-chat!');
 });
-
-client.on('guildMemberRemove', member => {
-  const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
-  if (!channel) return;
-  channel.send(member.user.tag + ' has left the server.');
-})
-//#endregion
