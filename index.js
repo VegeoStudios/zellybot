@@ -117,7 +117,7 @@ client.on('disconnect', () => {
 //#region on message
 client.on('message', message => {
   if (message.author.bot) return;
-  if (message.channel.id != 559872407926472724 && !message.member.hasPermission('ADMINISTRATOR')) return;  //BOT LOCK
+  //if (message.channel.id != 559872407926472724 && !message.member.hasPermission('ADMINISTRATOR')) return;  //BOT LOCK
   //console.log(message.content);
 
   //#region Invite Block
@@ -219,6 +219,6 @@ client.on('guildMemberAdd', member => {
 client.on('guildMemberRemove', member => {
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
   if (!channel) return;
-  channel.send(member + ' has left the server.');
+  channel.send(member.user.tag + ' has left the server.');
 })
 //#endregion
