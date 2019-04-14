@@ -137,11 +137,21 @@ client.on('debug', d => {
   timestring += now.getMinutes() + ']';
 
   console.log(timestring + chalk.black.bgGreen('DEBUG:') + ' ' + d);
-  // const guild = client.guilds.find(g => g.id === '348104361739812874');
-  // if (guild) {
-  //   const channel = guild.channels.find(ch => ch.id === '566628693972090890');
-  //   if (channel) channel.send('DEBUG:\n' + d);
-  // }
+
+  const guild = client.guilds.find(g => g.id === '348104361739812874');
+  if (guild) {
+    const channel = guild.channels.find(ch => ch.id === '566628693972090890');
+    if (channel) {
+      const m = channel.fetchMessage('567020813400670308');
+      if (m) {
+        m.edit(new Discord.RichEmbed()
+          .setTitle('**HEARTBEAT**')
+          .setDescription(d)
+          .setColor('00ff00')
+          .setTimestamp(now));
+      }
+    }
+  }
 });
 //#endregion
 
