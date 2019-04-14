@@ -116,12 +116,15 @@ client.on('disconnect', () => {
 });
 
 client.on('error', err => {
-  console.log(err);
-  if (client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890)) client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890).send('ERROR:\n' + err);
+  console.error('The websocket encountered and error: ' + err);
 });
 
 client.on('warn', w => {
   if (client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890)) client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890).send('WARNING:\n' + w);
+});
+
+client.on('debug', d => {
+  if (client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890)) client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890).send('DEBUG:\n' + w);
 });
 //#endregion
 
