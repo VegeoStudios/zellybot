@@ -140,16 +140,11 @@ client.on('debug', d => {
 
   const guild = client.guilds.find(g => g.id === '348104361739812874');
   if (guild) {
-    const channel = guild.channels.find(ch => ch.id === '566628693972090890');
+    const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
-      const m = channel.fetchMessage('567020813400670308');
-      if (m) {
-        m.edit(new Discord.RichEmbed()
-          .setTitle('**HEARTBEAT**')
-          .setDescription(d)
-          .setColor('00ff00')
-          .setTimestamp(now));
-      }
+      channel.fetchMessage('567030599857078286').then(m => {
+        m.edit(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setColor('00ff00').setDescription('`' + d + '`').setTimestamp());
+      });
     }
   }
 });
