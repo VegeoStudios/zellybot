@@ -8,8 +8,9 @@ module.exports.run = async (client, message, args) => {
   //     console.log(element);
   // });
 
-  message.channel.send('test');
+  //message.channel.send('test');
   
+  message.channel.send(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setDescription('test'));
 }
 
 module.exports.help = {

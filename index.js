@@ -129,7 +129,8 @@ client.on('warn', w => {
 });
 
 client.on('debug', d => {
-  //console.log('DEBUG: ' + d);
+  const now = new Date();
+  console.log('[' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + '][' + now.getHours() + ':' + now.getMinutes() + '] ' + chalk.black.bgGreen('DEBUG: ' + d));
   // const guild = client.guilds.find(g => g.id === '348104361739812874');
   // if (guild) {
   //   const channel = guild.channels.find(ch => ch.id === '566628693972090890');
