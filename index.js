@@ -120,11 +120,13 @@ client.on('error', err => {
 });
 
 client.on('warn', w => {
-  if (client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890)) client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890).send('WARNING:\n' + w);
+  const channel = client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890);
+  if (channel) channel.send('WARNING:\n' + w);
 });
 
 client.on('debug', d => {
-  if (client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890)) client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890).send('DEBUG:\n' + w);
+  const channel = client.guilds.find(g => g.id === 348104361739812874).channels.find(ch => ch.id === 566628693972090890);
+  if (channel) channel.send('DEBUG:\n' + w);
 });
 //#endregion
 
