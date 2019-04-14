@@ -130,7 +130,13 @@ client.on('warn', w => {
 
 client.on('debug', d => {
   const now = new Date();
-  console.log('[' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + '][' + now.getHours() + ':' + now.getMinutes() + '] ' + chalk.black.bgGreen('DEBUG: ' + d));
+  let timestring = '[' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + '][';
+  if (now.getHours() < 10) timestring += '0';
+  timestring += now.getHours() + ':';
+  if (now.getMinutes() < 10) timestring += '0';
+  timestring += now.getMinutes() + ']';
+
+  console.log(timestring + chalk.black.bgGreen('DEBUG:') + ' ' + d);
   // const guild = client.guilds.find(g => g.id === '348104361739812874');
   // if (guild) {
   //   const channel = guild.channels.find(ch => ch.id === '566628693972090890');
