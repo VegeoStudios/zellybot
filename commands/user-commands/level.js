@@ -48,8 +48,8 @@ module.exports.run = async (client, message, args) => {
   /*======================================================================*/
 
   let scale = Math.max(canvas.width / dimensions.width, canvas.height / dimensions.height);
-  let _x = (canvas.width / 2) - (dimensions.width / 2) * scale;
-  let _y = (canvas.height / 2) - (dimensions.height / 2) * scale;
+  let _x = (canvas.width / 2) - ((dimensions.width / 2) * scale);
+  let _y = (canvas.height / 2) - ((dimensions.height / 2) * scale);
 
   context.drawImage(await Canvas.loadImage(back), _x, _y, dimensions.width * scale, dimensions.height * scale);
   

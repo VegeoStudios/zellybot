@@ -1,3 +1,5 @@
+//Created by Vegeo Studios for the Bro Zelly Gaming Discord server
+
 const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
@@ -117,6 +119,14 @@ client.on('disconnect', () => {
 
 client.on('error', err => {
   console.error('The websocket encountered and error: ' + err);
+
+  const guild = client.guilds.find(g => g.id === '348104361739812874');
+  if (guild) {
+    const channel = guild.channels.find(ch => ch.id === '566628693972090890');
+    if (channel) {
+      channel.send('```\n' + err + '\n```');
+    }
+  }
 });
 
 client.on('warn', w => {
@@ -143,7 +153,7 @@ client.on('debug', d => {
     const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
       channel.fetchMessage('567030599857078286').then(m => {
-        m.edit(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setColor('00ff00').setDescription('`' + d + '`').setTimestamp());
+        m.edit(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setColor(embedcolor["debug"]).setDescription('`' + d + '`').setTimestamp());
       });
     }
   }
@@ -153,8 +163,6 @@ client.on('debug', d => {
 //#region MESSAGE EVENT
 client.on('message', message => {
   if (message.author.bot) return;
-  //if (message.channel.id != 559872407926472724 && !message.member.hasPermission('ADMINISTRATOR')) return;  //BOT LOCK
-  //console.log(message.content);
 
   //#region Invite Block
   if (message.content.includes('discord.gg/' || 'discordapp.com/invite/') && message.channel.id != 364778525804462092 && !message.member.hasPermission('ADMINISTRATOR')) {
@@ -241,6 +249,15 @@ client.on('message', message => {
     }
   }
   //#endregion
+
+  //#region Todo Channel
+  if (message.channel.id === '567102648751489024') {
+    message.channel.send(new Discord.RichEmbed().setTitle('TODO').setColor(embedcolor["bot"]).setDescription('**' + message.member.displayName + ':** ' + message.content)).then(msg => {
+      msg.react('✔');
+    });
+    message.delete();
+  }
+  //#endregion
 });
 //#endregion
 
@@ -255,5 +272,12 @@ client.on('guildMemberAdd', member => {
 client.on('guildMemberRemove', member => {
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
   if (channel) channel.send(member + ' has left the server.');
+});
+//#endregion
+
+//#region Todo list reaction functionality
+client.on('messageReactionAdd', (reaction, user) => {
+  if (reaction.message.channel.id != '567102648751489024') return;
+  if (user.id === '235202689544355840') reaction.message.delete();
 });
 //#endregion
