@@ -275,9 +275,37 @@ client.on('guildMemberRemove', member => {
 });
 //#endregion
 
-//#region Todo list reaction functionality
+//#region RAW EVENT
+const events = {
+  MESSAGE_REACTION_ADD: 'messageReactionAdd',
+  MESSAGE_REACTION_REMOVE: 'messageReactionRemove'
+}
+
+client.on('raw', async event => {
+  if (!events.hasOwnProperty(event.t)) return;
+
+  const {d: data } = event;
+  const user = client.users.get(data.user_id);
+  const channel = client.channels.get(data.channel_id) || await user.createDM();
+
+  if (channel.messages.has(data.message_id)) return;
+
+  const message  = await channel.fetchMessage(data.message_id);
+
+  const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+	const reaction = message.reactions.get(emojiKey);
+
+	client.emit(events[event.t], reaction, user);
+});
+//#endregion
+
+//#region REACTION EVENT
 client.on('messageReactionAdd', (reaction, user) => {
-  if (reaction.message.channel.id != '567102648751489024') return;
-  if (user.id === '235202689544355840') reaction.message.delete();
+  if (reaction.message.channel.id === '567102648751489024' && user.id === '235202689544355840') reaction.message.delete();
+  if (reaction.message.id == '465887198605082644') reaction.message.guild.members.get(user.id).addRole('496742783990890518');
+});
+
+client.on('messageReactionRemove', (reaction, user) => {
+  if (reaction.message.id == '465887198605082644') reaction.message.guild.members.get(user.id).removeRole('496742783990890518');
 });
 //#endregion
