@@ -219,7 +219,7 @@ client.on('message', message => {
       .setTitle('XP LEVELING')
       .setColor(embedcolor["xp"])
       .addField(message.member.displayName + 'has leveled up!', 'You are now level ' + client.userinfo.get(key, "levelinfo.level"), true)
-      .setFooter(((5 * (client.userinfo.get(key, "levelinfo.level") ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100) - client.userinfo.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userinfo.get(key, "levelinfo.level") + 1) + '!')).then(msg => msg.delete(10000));
+      .setFooter(((5 * (client.userinfo.get(key, "levelinfo.level") ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100) - client.userinfo.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userinfo.get(key, "levelinfo.level") + 1) + '!'));
     Object.keys(ranks).forEach(element => {
       if (client.userinfo.get(key, "levelinfo.level").toString() === element) member.addRole(message.guild.roles.find(role => role.name === ranks[element]));
     });
