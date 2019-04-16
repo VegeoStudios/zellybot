@@ -110,7 +110,17 @@ function loadFiles() {
 
 //#region BOT LOGGING
 client.on('ready', () => {
-    console.log(chalk.black.bgGreen('BOT ONLINE'));
+  console.log(chalk.black.bgGreen('BOT ONLINE'));
+
+  const guild = client.guilds.find(g => g.id === '348104361739812874');
+  if (guild) {
+    const channel = guild.channels.find(ch => ch.id === '566996747143086090');
+    if (channel) {
+      channel.fetchMessage('567533603668492291').then(m => {
+        m.edit(new Discord.RichEmbed().setTitle('**RECONNECTION**').setColor(embedcolor["error"]).setDescription('`INITIAL CONNECTION`').setTimestamp());
+      });
+    }
+  }
 });
 
 client.on('disconnect', () => {
@@ -118,13 +128,22 @@ client.on('disconnect', () => {
 });
 
 client.on('error', err => {
-  console.error('The websocket encountered and error: ' + err);
+  const now = new Date();
+  let timestring = '[' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + '][';
+  if (now.getHours() < 10) timestring += '0';
+  timestring += now.getHours() + ':';
+  if (now.getMinutes() < 10) timestring += '0';
+  timestring += now.getMinutes() + ']';
+
+  console.log(timestring + chalk.black.bgRed('ERROR:') + ' ' + err);
 
   const guild = client.guilds.find(g => g.id === '348104361739812874');
   if (guild) {
-    const channel = guild.channels.find(ch => ch.id === '566628693972090890');
+    const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
-      channel.send('```\n' + err + '\n```');
+      channel.fetchMessage('567533603668492291').then(m => {
+        m.edit(new Discord.RichEmbed().setTitle('**RECONNECTION**').setColor(embedcolor["error"]).setDescription('`' + err + '`').setTimestamp());
+      });
     }
   }
 });
@@ -152,7 +171,7 @@ client.on('debug', d => {
   if (guild) {
     const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
-      channel.fetchMessage('567030599857078286').then(m => {
+      channel.fetchMessage('567533592557649926').then(m => {
         m.edit(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setColor(embedcolor["debug"]).setDescription('`' + d + '`').setTimestamp());
       });
     }
