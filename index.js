@@ -215,7 +215,7 @@ client.on('message', message => {
   if (curxp >= 5 * (curlvl ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100){
     client.userinfo.set(key, client.userinfo.get(key, "levelinfo.xp") - (5 * (curlvl ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100), "levelinfo.xp");
     client.userinfo.inc(key, "levelinfo.level");
-    message.channel.send(new Discord.RichEmbed()
+    message.guild.channels.find(ch => ch.id === '372536951460593675').send(new Discord.RichEmbed()
       .setTitle('XP LEVELING')
       .setColor(embedcolor["xp"])
       .addField(message.member.displayName + 'has leveled up!', 'You are now level ' + client.userinfo.get(key, "levelinfo.level"), true)
