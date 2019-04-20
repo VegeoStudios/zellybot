@@ -110,14 +110,25 @@ function loadFiles() {
 
 //#region BOT LOGGING
 client.on('ready', () => {
-  console.log(chalk.black.bgGreen('BOT ONLINE'));
+  const now = new Date();
+  let timestring = '[' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear() + '][';
+  if (now.getHours() < 10) timestring += '0';
+  timestring += now.getHours() + ':';
+  if (now.getMinutes() < 10) timestring += '0';
+  timestring += now.getMinutes() + ']';
+
+  console.log(timestring + chalk.black.bgGreen('BOT ONLINE'));
 
   const guild = client.guilds.find(g => g.id === '348104361739812874');
   if (guild) {
     const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
-      channel.fetchMessage('567533603668492291').then(m => {
-        m.edit(new Discord.RichEmbed().setTitle('**RECONNECTION**').setColor(embedcolor["error"]).setDescription('`INITIAL CONNECTION`').setTimestamp());
+      channel.fetchMessage('569186823604142080').then(m => {
+        let embed = new Discord.RichEmbed(m.embeds[0]).addField('`' + timestring + '`', '`INITIAL CONNECTION`').setTitle('**CONNECTION**');
+        if (embed.fields.length >= 5) {
+          embed.fields.shift();
+        }
+        m.edit(embed);
       });
     }
   }
@@ -141,19 +152,14 @@ client.on('error', err => {
   if (guild) {
     const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
-      channel.fetchMessage('567533603668492291').then(m => {
-        m.edit(new Discord.RichEmbed().setTitle('**RECONNECTION**').setColor(embedcolor["error"]).setDescription('`' + err + '`').setTimestamp());
+      channel.fetchMessage('569186823604142080').then(m => {
+        let embed = new Discord.RichEmbed(m.embeds[0]).addField('`' + timestring + '`', '`INITIAL CONNECTION`').setTitle('**CONNECTION**');
+        if (embed.fields.length >= 5) {
+          embed.fields.shift();
+        }
+        m.edit(embed);
       });
     }
-  }
-});
-
-client.on('warn', w => {
-  //console.log('DEBUG: ' + d);
-  const guild = client.guilds.find(g => g.id === '348104361739812874');
-  if (guild) {
-    const channel = guild.channels.find(ch => ch.id === '566628693972090890');
-    if (channel) channel.send('WARNING:\n' + d);
   }
 });
 
@@ -171,8 +177,12 @@ client.on('debug', d => {
   if (guild) {
     const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
-      channel.fetchMessage('567533592557649926').then(m => {
-        m.edit(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setColor(embedcolor["debug"]).setDescription('`' + d + '`').setTimestamp());
+      channel.fetchMessage('569186807883759628').then(m => {
+        let embed = new Discord.RichEmbed(m.embeds[0]).addField('`' + timestring + '`', '`' + d + '`').setColor(embedcolor["debug"]);
+        if (embed.fields.length >= 5) {
+          embed.fields.shift();
+        }
+        m.edit(embed);
       });
     }
   }
