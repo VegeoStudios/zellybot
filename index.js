@@ -218,7 +218,7 @@ client.on('message', message => {
     message.guild.channels.find(ch => ch.id === '372536951460593675').send(new Discord.RichEmbed()
       .setTitle('XP LEVELING')
       .setColor(embedcolor["xp"])
-      .addField(message.member.displayName + 'has leveled up!', 'You are now level ' + client.userinfo.get(key, "levelinfo.level"), true)
+      .addField(message.member.displayName + ' has leveled up!', 'You are now level ' + client.userinfo.get(key, "levelinfo.level"), true)
       .setFooter(((5 * (client.userinfo.get(key, "levelinfo.level") ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100) - client.userinfo.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userinfo.get(key, "levelinfo.level") + 1) + '!'));
     Object.keys(ranks).forEach(element => {
       if (client.userinfo.get(key, "levelinfo.level").toString() === element) member.addRole(message.guild.roles.find(role => role.name === ranks[element]));
