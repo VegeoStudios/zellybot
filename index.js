@@ -153,7 +153,7 @@ client.on('error', err => {
     const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
       channel.fetchMessage('569186823604142080').then(m => {
-        let embed = new Discord.RichEmbed(m.embeds[0]).addField('`' + timestring + '`', '`INITIAL CONNECTION`').setTitle('**CONNECTION**');
+        let embed = new Discord.RichEmbed(m.embeds[0]).addField('`' + timestring + '`', '`' + err + '`').setTitle('**CONNECTION**');
         if (embed.fields.length >= 5) {
           embed.fields.shift();
         }
