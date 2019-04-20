@@ -1,5 +1,4 @@
-
-*.json
-*.sqlite-shm
-*.sqlite-shm
-*.sqlite-wal
+node_modules/
+data/
+.vs/
+config.json
