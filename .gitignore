@@ -2,5 +2,3 @@ node_modules/
 data/
 .vs/
 config.json
-data/enmap.sqlite-shm
-data/enmap.sqlite-wal
