@@ -153,7 +153,8 @@ client.on('error', err => {
     const channel = guild.channels.find(ch => ch.id === '566996747143086090');
     if (channel) {
       channel.fetchMessage('569186823604142080').then(m => {
-        let embed = new Discord.RichEmbed(m.embeds[0]).addField('`' + timestring + '`', '`' + err + '`').setTitle('**CONNECTION**');
+        if (err == '[object Object]') err = 'Websocket reconnection';
+        let embed = new Discord.RichEmbed(m.embeds[0]).addField('`' + timestring + '`', '`' + err + '`');
         if (embed.fields.length >= 5) {
           embed.fields.shift();
         }
