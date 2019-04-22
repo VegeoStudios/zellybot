@@ -300,7 +300,7 @@ client.on('guildMemberAdd', member => {
 
 client.on('guildMemberRemove', member => {
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
-  if (channel) channel.send('**' + member.tag + '**' + ' has left the server.');
+  if (channel) channel.send('**' + member.user.tag + '**' + ' has left the server.');
 });
 //#endregion
 
