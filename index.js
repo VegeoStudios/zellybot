@@ -295,12 +295,12 @@ client.on('guildMemberAdd', member => {
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
   if (channel) channel.send(member + ' has joined the server.');
   const channel1 = member.guild.channels.find(ch => ch.name === 'welcome');
-  if (channel1) channel1.send(member + ' Welcome to BZG, aka Bro Zelly Gaming! <:BZGLOGOTEMPLATE:353915937822605312>\n\nBe sure you go by #rules-and-information to learn how we do things around here. React in each category for the roles you want.  If you ever wish to leave a role, just un-click the reaction. Come say hello in #general-chat!');
+  if (channel1) channel1.send(member + ' Welcome to BZG, aka Bro Zelly Gaming! <:BZGLOGOTEMPLATE:353915937822605312>\n\nBe sure you go by <#465885568321060865> to learn how we do things around here. React in each category for the roles you want.  If you ever wish to leave a role, just un-click the reaction. Come say hello in <#348104362180083723>!');
 });
 
 client.on('guildMemberRemove', member => {
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
-  if (channel) channel.send(member + ' has left the server.');
+  if (channel) channel.send('**' + member.tag + '**' + ' has left the server.');
 });
 //#endregion
 
