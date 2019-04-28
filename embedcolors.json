@@ -6,5 +6,15 @@
     "help": "0x3498DB",
     "debug": "0x00ff00",
     "error": "0xff0000",
-    "warning": "0xffff00"
+    "warning": "0xffff00",
+    "log": {
+        "channel": "0xffff00",
+        "emoji": "0xffcccc",
+        "mod": "0xff0000",
+        "role": "0x00ff00",
+        "nickname": "0x0000ff",
+        "note": "0x00ffff"
+    },
+    "welcome": "0x00ff00",
+    "goodbye": "0xff0000"
 }

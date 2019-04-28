@@ -10,7 +10,9 @@ module.exports.run = async (client, message, args) => {
 
   //message.channel.send('test');
   
-  message.channel.send(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setDescription('test'));
+  //message.channel.send(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setDescription('test'));
+
+  message.channel.send(message.guild.emojis.first().identifier)
 }
 
 module.exports.help = {

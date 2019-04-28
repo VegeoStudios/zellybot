@@ -17,6 +17,8 @@ const port = 53134;
 
 let story = '';
 
+let logchannel;
+
 //#region WEB SERVER
 http.createServer((req, res) => {
   let responseCode = 404;
@@ -294,14 +296,14 @@ client.on('message', message => {
 //#region WELCOME & GOODBYE
 client.on('guildMemberAdd', member => {
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
-  if (channel) channel.send(member + ' has joined the server.');
+  if (channel) channel.send(new Discord.RichEmbed().setTitle('WELCOME').setColor(embedcolor["welcome"]).setDescription('**' + member + '** has joined the server'));
   const channel1 = member.guild.channels.find(ch => ch.name === 'welcome');
   if (channel1) channel1.send(member + ' Welcome to BZG, aka Bro Zelly Gaming! <:BZGLOGOTEMPLATE:353915937822605312>\n\nBe sure you go by <#465885568321060865> to learn how we do things around here. React in each category for the roles you want.  If you ever wish to leave a role, just un-click the reaction. Come say hello in <#348104362180083723>!');
 });
 
 client.on('guildMemberRemove', member => {
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
-  if (channel) channel.send('**' + member.user.tag + '**' + ' has left the server.');
+  if (channel) channel.send(new Discord.RichEmbed().setTitle('GOODBYE').setColor(embedcolor["goodbye"]).setDescription('**' + member.user.tag + '** has left the server'));
 });
 //#endregion
 
@@ -337,5 +339,120 @@ client.on('messageReactionAdd', (reaction, user) => {
 
 client.on('messageReactionRemove', (reaction, user) => {
   if (reaction.message.id == '465887198605082644') reaction.message.guild.members.get(user.id).removeRole('496742783990890518');
+});
+//#endregion
+
+//#region LOGS
+client.on('ready', () => {
+  const guild = client.guilds.find(g => g.id === '348104361739812874');
+  if (guild) {
+    logchannel = guild.channels.find(c => c.id == '566376352522174484');
+  }
+});
+
+client.on('channelCreate', channel => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('CHANNEL CREATED')
+    .setColor(embedcolor["log"]["channel"])
+    .setDescription('<#' + channel.id + '> was created')
+    .setTimestamp());
+});
+
+client.on('channelDelete', channel => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('CHANNEL DELETED')
+    .setColor(embedcolor["log"]["channel"])
+    .setDescription('<#' + channel.id + '> was deleted')
+    .setTimestamp());
+});
+
+client.on('channelPinsUpdate', channel => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('PIN UPDATED')
+    .setColor(embedcolor["log"]["channel"])
+    .setDescription('A pin was updated in <#' + channel.id + '>')
+    .setTimestamp());
+});
+
+client.on('emojiCreate', emoji => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('EMOJI CREATED')
+    .setColor(embedcolor["log"]["emoji"])
+    .setDescription('An emoji was created')
+    .setThumbnail(emoji.url)
+    .setTimestamp());
+});
+
+client.on('emojiDelete', emoji => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('EMOJI DELETED')
+    .setColor(embedcolor["log"]["emoji"])
+    .setDescription('An emoji was deleted')
+    .setThumbnail(emoji.url)
+    .setTimestamp());
+});
+
+client.on('guildBanAdd', (guild, user) => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('USER BANNED')
+    .setColor(embedcolor["log"]["mod"])
+    .setDescription(user.tag + ' was banned')
+    .setTimestamp());
+});
+
+client.on('guildBanRemove', (guild, user) => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('USER UNBANNED')
+    .setColor(embedcolor["log"]["mod"])
+    .setDescription(user.tag + ' was unbanned')
+    .setTimestamp());
+});
+
+client.on('roleCreate', role => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('ROLE CREATED')
+    .setColor(embedcolor["log"]["role"])
+    .setDescription('<@' + role.id + '> was created')
+    .setTimestamp());
+});
+
+client.on('roleDelete', role => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('ROLE DELETED')
+    .setColor(embedcolor["log"]["role"])
+    .setDescription('<@' + role.id + '> was created')
+    .setTimestamp());
+});
+
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+  if (oldMember.roles.size > newMember.roles.size) {
+    logchannel.send(new Discord.RichEmbed()
+      .setTitle('ROLE REMOVED')
+      .setColor(embedcolor["log"]["role"])
+      .setDescription('<@' + newMember.id + '> was removed of the role ' + oldMember.roles.find(role => !newMember.roles.has(role.id)))
+      .setTimestamp());
+  } else if (oldMember.roles.size < newMember.roles.size) {
+    logchannel.send(new Discord.RichEmbed()
+      .setTitle('ROLE ADDED')
+      .setColor(embedcolor["log"]["role"])
+      .setDescription('<@' + newMember.id + '> was given the role ' + newMember.roles.find(role => !oldMember.roles.has(role.id)))
+      .setTimestamp());
+  }
+
+  if (oldMember.nickname != newMember.nickname) {
+    logchannel.send(new Discord.RichEmbed()
+      .setTitle('NICKNAME CHANGED')
+      .setColor(embedcolor["log"]["nickname"])
+      .setDescription('<@' + newMember.id + '> changed their nickname from ' + oldMember.nickname + ' to ' + newMember.nickname)
+      .setTimestamp());
+  }
+});
+
+client.on('userNoteUpdate', (user, oldNote, newNote) => {
+  logchannel.send(new Discord.RichEmbed()
+    .setTitle('USER NOT UPDATED')
+    .setColor(embedcolor["log"]["note"])
+    .setDescription('<@' + role.id + '>\'s note was updated from:\n' + oldNote + '\nto:\n' + newNote)
+    .setTimestamp());
 });
 //#endregion
