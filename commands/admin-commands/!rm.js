@@ -10,6 +10,11 @@ module.exports.run = async (client, message, args) => {
           .setTitle('MODERATION')
           .setColor(embedcolor["moderation"])
           .setDescription('**' + message.author.username + '** pruned **' + args[0] + '** messages')).then(msg => msg.delete(5000));
+        message.guild.channels.find(c => c.id == '566376352522174484').send(new Discord.RichEmbed()
+          .setTitle('BULK DELETE')
+          .setColor(embedcolor["log"]["mod"])
+          .setDescription(args[0] + ' messages were deleted by ' + message.member + ' in ' + message.channel)
+          .setTimestamp());
       } else {
         message.delete();
         message.channel.send(new Discord.RichEmbed()
