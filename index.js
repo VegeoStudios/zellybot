@@ -77,26 +77,6 @@ function loadFiles() {
     //#endregion
   });
 
-  fs.readdir('./commands/redirect-commands/', (err, files) => {
-    //#region REDIRECT COMMANDS
-    if (err) console.log(err);
-    
-    let jsfile = files.filter(f => f.split('.').pop() === 'js');
-    if (jsfile.length <= 0){
-      console.log(chalk.red('ERROR'), 'Commands not found');
-      return;
-    }
-    
-    console.log(chalk.yellow.bold('REDIRECT COMMANDS:'));
-
-    jsfile.forEach((f, i) => {
-      let props = require('./commands/redirect-commands/' + f);
-      console.log('-' + f + chalk.green(' loaded'));
-      client.redirectcommands.set(props.help.name, props);
-    });
-    //#endregion
-  });
-
   client.login(config.token).then(console.log(chalk.green('Client logging in...')));
 }
 //#endregion
