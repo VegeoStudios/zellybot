@@ -23,7 +23,7 @@ module.exports.run = async (client, message, args) => {
           .setDescription('DATABASE CHANGE COMPLETE'));
       });
       for (i in file.players) {
-        client.userinfo.ensure(file.players[i].id, {
+        client.userdatabase.ensure(file.players[i].id, {
           userid: file.players[i].id,
           username: file.players[i].username,
           levelinfo: {
@@ -35,7 +35,7 @@ module.exports.run = async (client, message, args) => {
             style: 'default'
           }
         });
-        client.userinfo.set(file.players[i].id, {
+        client.userdatabase.set(file.players[i].id, {
           xp: file.players[i].detailed_xp[0],
           totalxp: file.players[i].xp,
           level: file.players[i].level

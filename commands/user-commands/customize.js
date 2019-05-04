@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
     case 'background':
       //#region BACKGROUND
       if (message.attachments.size > 0) {
-        client.userinfo.set(message.author.id, message.attachments.first().url, 'cardinfo.background');
+        client.userdatabase.set(message.author.id, message.attachments.first().url, 'cardinfo.background');
         message.channel.send(new Discord.RichEmbed()
           .setTitle('CUSTOMIZATION')
           .setColor('0xFFFF00')
@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
       //#endregion
     case 'color':
       //#region COLOR
-      client.userinfo.set(message.author.id, args[1], 'cardinfo.color');
+      client.userdatabase.set(message.author.id, args[1], 'cardinfo.color');
       message.channel.send(new Discord.RichEmbed()
         .setTitle('CUSTOMIZATION')
         .setColor('0xFFFF00')
@@ -43,7 +43,7 @@ module.exports.run = async (client, message, args) => {
           return;
         }
       }
-      client.userinfo.set(userarg, {
+      client.userdatabase.set(userarg, {
         background: './images/background.jpg',
         color: '3232fa',
         style: 'default'

@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args) => {
   let userarg = message.author;
   if (message.mentions.users.array().length > 0) userarg = message.mentions.users.first();
 
-  let back = client.userinfo.get(userarg.id, "cardinfo.background");
+  let back = client.userdatabase.get(userarg.id, "cardinfo.background");
   let dimensions = sizeOf('./images/background.jpg');
 
   let file = true;
@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
   } catch (err) {
     back = './images/background.jpg';
     file = true;
-    client.userinfo.set(userarg.id, './images/background.jpg', "cardinfo.background");
+    client.userdatabase.set(userarg.id, './images/background.jpg', "cardinfo.background");
     message.channel.send(new Discord.RichEmbed()
       .setTitle('ERROR')
       .setColor(embedcolor["bot"])
@@ -59,8 +59,8 @@ module.exports.run = async (client, message, args) => {
   context.font = '18px sans-serif';
   context.textAlign = 'center';
   context.textBaseline = 'top';
-  const progress = client.userinfo.get(userarg.id, "levelinfo.xp") + '/' + (5 * (client.userinfo.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userinfo.get(userarg.id, "levelinfo.level") + 100);
-  const x = 195 + functions.map(client.userinfo.get(userarg.id, "levelinfo.xp"), 0, 5 * (client.userinfo.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userinfo.get(userarg.id, "levelinfo.level") + 100, 0, 440);
+  const progress = client.userdatabase.get(userarg.id, "levelinfo.xp") + '/' + (5 * (client.userdatabase.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(userarg.id, "levelinfo.level") + 100);
+  const x = 195 + functions.map(client.userdatabase.get(userarg.id, "levelinfo.xp"), 0, 5 * (client.userdatabase.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(userarg.id, "levelinfo.level") + 100, 0, 440);
   let trianglex = x;
   let rectx = x;
   if (rectx < 205 + (context.measureText(progress).width / 2)) {
@@ -82,8 +82,8 @@ module.exports.run = async (client, message, args) => {
   context.fillStyle = '#FFFFFF';
   context.fillText(progress, rectx, 165);
 
-  context.fillStyle = '#' + client.userinfo.get(userarg.id, "cardinfo.color");
-  context.fillRect(195, 110, functions.map(client.userinfo.get(userarg.id, "levelinfo.xp"), 0, 5 * (client.userinfo.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userinfo.get(userarg.id, "levelinfo.level") + 100, 0, 440), 25);
+  context.fillStyle = '#' + client.userdatabase.get(userarg.id, "cardinfo.color");
+  context.fillRect(195, 110, functions.map(client.userdatabase.get(userarg.id, "levelinfo.xp"), 0, 5 * (client.userdatabase.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(userarg.id, "levelinfo.level") + 100, 0, 440), 25);
 
   context.beginPath();
   context.arc(125, 125, 87, 0, Math.PI * 2, true);
@@ -94,10 +94,10 @@ module.exports.run = async (client, message, args) => {
   context.textAlign = 'left';
   context.fillStyle = '#FFFFFF';
   context.font = '24px sans-serif';
-  context.fillText('LEVEL ' + client.userinfo.get(userarg.id, "levelinfo.level"), 215, 132);
+  context.fillText('LEVEL ' + client.userdatabase.get(userarg.id, "levelinfo.level"), 215, 132);
   context.textAlign = 'right';
   context.font = '18px sans-serif';
-  context.fillText((5 * (client.userinfo.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userinfo.get(userarg.id, "levelinfo.level") + 100) - client.userinfo.get(userarg.id, "levelinfo.xp") + ' xp to reach level ' + (client.userinfo.get(userarg.id, "levelinfo.level") + 1), 632, 130);
+  context.fillText((5 * (client.userdatabase.get(userarg.id, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(userarg.id, "levelinfo.level") + 100) - client.userdatabase.get(userarg.id, "levelinfo.xp") + ' xp to reach level ' + (client.userdatabase.get(userarg.id, "levelinfo.level") + 1), 632, 130);
 
   let textsize = 36;
   context.font = '36px sans-serif';
@@ -127,7 +127,7 @@ module.exports.run = async (client, message, args) => {
   context.arc(75, 175, 35, 0, Math.PI * 2, true);
   context.closePath();
   context.fill();
-  context.fillStyle = '#' + client.userinfo.get(userarg.id, "cardinfo.color");
+  context.fillStyle = '#' + client.userdatabase.get(userarg.id, "cardinfo.color");
   context.beginPath();
   context.arc(75, 175, 30, 0, Math.PI * 2, true);
   context.closePath();
@@ -137,7 +137,7 @@ module.exports.run = async (client, message, args) => {
   context.textAlign = 'center';
   context.textBaseline = 'middle';
   context.font = '24px sans-serif';
-  context.fillText('#' + (client.userinfo.array().sort((a, b) => b.levelinfo.totalxp - a.levelinfo.totalxp).findIndex(a => a.userid === userarg.id) + 1), 75, 175);
+  context.fillText('#' + (client.userdatabase.array().sort((a, b) => b.levelinfo.totalxp - a.levelinfo.totalxp).findIndex(a => a.userid === userarg.id) + 1), 75, 175);
 
   const attachment = new Discord.Attachment(canvas.toBuffer(), 'image.png');
 

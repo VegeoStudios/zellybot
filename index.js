@@ -1,4 +1,4 @@
-//Created by Vegeo Studios for the Bro Zelly Gaming Discord server
+//Created by Vegeo Studios for the Bro Zelly Gaming Discord server.
 
 const Discord = require('discord.js');
 const fs = require('fs');
@@ -7,43 +7,46 @@ const config = require('./config.json');
 const chalk = require('chalk');
 const reply = require('./reply.json');
 const ranks = require('./ranks.json');
-const http = require('http');
 const embedcolor = require('./embedcolors.json');
-
-const Enmap = require('enmap');
-client.userinfo = new Enmap({name: "userinfo"});
-
-const port = 53134;
 
 let story = '';
 
 let logchannel;
 
-//#region WEB SERVER
-http.createServer((req, res) => {
-  let responseCode = 404;
-  let content = '404 Error';
+//#region ENMAP LOADING
+const Enmap = require('enmap');
 
-  if (req.url === '/') {
-      responseCode = 200;
-      content = fs.readFileSync('./webinterface/index.html');
-  }
+client.userdatabase = new Enmap({
+  name: "userdatabase",
+  persistent: true,
+  fetchAll: true,
+  autoFetch: true,
+});
 
-  res.writeHead(responseCode, {
-      'content-type': 'text/html;charset=utf-8',
-  });
+(async () => {
+  await client.userdatabase.defer;
+  console.log(chalk.green(client.userdatabase.size + " keys loaded"));
+  loadFiles();
+})();
 
-  res.write(content);
-  res.end();
-}).listen(port);
+client.testenmap = new Enmap({
+  name: "testenmap",
+  persistent: true,
+  fetchAll: true,
+  autoFetch: true,
+});
+
+(async () => {
+  await client.testenmap.defer;
+  console.log(client.testenmap.get('x'));
+  client.testenmap.set('x', 5);
+})();
 //#endregion
 
 //#region LOADING
 client.admincommands = new Discord.Collection();
 client.usercommands = new Discord.Collection();
 client.redirectcommands = new Discord.Collection();
-
-loadFiles();
 
 function loadFiles() {
   fs.readdir('./commands/admin-commands/', (err, files) => {
@@ -206,7 +209,7 @@ client.on('message', message => {
   //#region Leveling system handler
   const key = message.author.id;
 
-  client.userinfo.ensure(key, {
+  client.userdatabase.ensure(key, {
     userid: key,
     username: message.author.username,
     levelinfo: {
@@ -220,21 +223,21 @@ client.on('message', message => {
   });
   
   let addxp = Math.floor(Math.random()* 9) + 1;
-  client.userinfo.set(key, client.userinfo.get(key, "levelinfo.xp") + addxp, "levelinfo.xp");
-  client.userinfo.set(key, client.userinfo.get(key, "levelinfo.totalxp") + addxp, "levelinfo.totalxp");
-  let curxp = client.userinfo.get(key, "levelinfo.xp");
-  let curlvl = client.userinfo.get(key, "levelinfo.level");
+  client.userdatabase.set(key, client.userdatabase.get(key, "levelinfo.xp") + addxp, "levelinfo.xp");
+  client.userdatabase.set(key, client.userdatabase.get(key, "levelinfo.totalxp") + addxp, "levelinfo.totalxp");
+  let curxp = client.userdatabase.get(key, "levelinfo.xp");
+  let curlvl = client.userdatabase.get(key, "levelinfo.level");
   
-  if (curxp >= 5 * (curlvl ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100){
-    client.userinfo.set(key, client.userinfo.get(key, "levelinfo.xp") - (5 * (curlvl ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100), "levelinfo.xp");
-    client.userinfo.inc(key, "levelinfo.level");
+  if (curxp >= 5 * (curlvl ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100){
+    client.userdatabase.set(key, client.userdatabase.get(key, "levelinfo.xp") - (5 * (curlvl ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100), "levelinfo.xp");
+    client.userdatabase.inc(key, "levelinfo.level");
     message.guild.channels.find(ch => ch.id === '372536951460593675').send(new Discord.RichEmbed()
       .setTitle('XP LEVELING')
       .setColor(embedcolor["xp"])
-      .addField(message.member.displayName + ' has leveled up!', 'You are now level ' + client.userinfo.get(key, "levelinfo.level"), true)
-      .setFooter(((5 * (client.userinfo.get(key, "levelinfo.level") ** 2) + 50 * client.userinfo.get(key, "levelinfo.level") + 100) - client.userinfo.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userinfo.get(key, "levelinfo.level") + 1) + '!'));
+      .addField(message.member.displayName + ' has leveled up!', 'You are now level ' + client.userdatabase.get(key, "levelinfo.level"), true)
+      .setFooter(((5 * (client.userdatabase.get(key, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100) - client.userdatabase.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userdatabase.get(key, "levelinfo.level") + 1) + '!'));
     Object.keys(ranks).forEach(element => {
-      if (client.userinfo.get(key, "levelinfo.level").toString() === element) message.member.addRole(message.guild.roles.find(role => role.name === ranks[element]));
+      if (client.userdatabase.get(key, "levelinfo.level").toString() === element) message.member.addRole(message.guild.roles.find(role => role.name === ranks[element]));
     });
   }
   //#endregion
@@ -295,6 +298,7 @@ client.on('message', message => {
 
 //#region WELCOME & GOODBYE
 client.on('guildMemberAdd', member => {
+  if (member.guild.channels.find(ch => ch.name === 'guestbook') == null) return;
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
   if (channel) channel.send(new Discord.RichEmbed().setTitle('WELCOME').setColor(embedcolor["welcome"]).setDescription('<@' + member.id + '> has joined the server'));
   const channel1 = member.guild.channels.find(ch => ch.name === 'welcome');
@@ -351,7 +355,7 @@ client.on('ready', () => {
 });
 
 client.on('channelCreate', channel => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('CHANNEL CREATED')
     .setColor(embedcolor["log"]["channel"])
     .setDescription('<#' + channel.id + '> was created')
@@ -359,7 +363,7 @@ client.on('channelCreate', channel => {
 });
 
 client.on('channelDelete', channel => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('CHANNEL DELETED')
     .setColor(embedcolor["log"]["channel"])
     .setDescription('<#' + channel.id + '> was deleted')
@@ -367,7 +371,7 @@ client.on('channelDelete', channel => {
 });
 
 client.on('channelPinsUpdate', channel => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('PIN UPDATED')
     .setColor(embedcolor["log"]["channel"])
     .setDescription('A pin was updated in <#' + channel.id + '>')
@@ -375,7 +379,7 @@ client.on('channelPinsUpdate', channel => {
 });
 
 client.on('emojiCreate', emoji => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('EMOJI CREATED')
     .setColor(embedcolor["log"]["emoji"])
     .setDescription('An emoji was created')
@@ -384,7 +388,7 @@ client.on('emojiCreate', emoji => {
 });
 
 client.on('emojiDelete', emoji => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('EMOJI DELETED')
     .setColor(embedcolor["log"]["emoji"])
     .setDescription('An emoji was deleted')
@@ -393,7 +397,7 @@ client.on('emojiDelete', emoji => {
 });
 
 client.on('guildBanAdd', (guild, user) => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('USER BANNED')
     .setColor(embedcolor["log"]["mod"])
     .setDescription(user.tag + ' was banned')
@@ -401,7 +405,7 @@ client.on('guildBanAdd', (guild, user) => {
 });
 
 client.on('guildBanRemove', (guild, user) => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('USER UNBANNED')
     .setColor(embedcolor["log"]["mod"])
     .setDescription(user.tag + ' was unbanned')
@@ -409,7 +413,7 @@ client.on('guildBanRemove', (guild, user) => {
 });
 
 client.on('roleCreate', role => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('ROLE CREATED')
     .setColor(embedcolor["log"]["role"])
     .setDescription('<@' + role.id + '> was created')
@@ -417,7 +421,7 @@ client.on('roleCreate', role => {
 });
 
 client.on('roleDelete', role => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('ROLE DELETED')
     .setColor(embedcolor["log"]["role"])
     .setDescription('<@' + role.id + '> was created')
@@ -425,7 +429,7 @@ client.on('roleDelete', role => {
 });
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
-  if (oldMember.roles.size > newMember.roles.size) {
+  if (logchannel) if (oldMember.roles.size > newMember.roles.size) {
     logchannel.send(new Discord.RichEmbed()
       .setTitle('ROLE REMOVED')
       .setColor(embedcolor["log"]["role"])
@@ -449,7 +453,7 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 });
 
 client.on('userNoteUpdate', (user, oldNote, newNote) => {
-  logchannel.send(new Discord.RichEmbed()
+  if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('USER NOT UPDATED')
     .setColor(embedcolor["log"]["note"])
     .setDescription('<@' + role.id + '>\'s note was updated from:\n' + oldNote + '\nto:\n' + newNote)
