@@ -34,6 +34,6 @@ module.exports.run = async (client, message, args) => {
 }
 
 module.exports.help = {
-  name: "prune",
+  name: "!rm",
   permission: "MANAGE_MESSAGES"
 }

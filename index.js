@@ -5,7 +5,6 @@ const fs = require('fs');
 const client = new Discord.Client();
 const config = require('./config.json');
 const chalk = require('chalk');
-const reply = require('./reply.json');
 const ranks = require('./ranks.json');
 const embedcolor = require('./embedcolors.json');
 
@@ -16,30 +15,19 @@ let logchannel;
 //#region ENMAP LOADING
 const Enmap = require('enmap');
 
-client.userdatabase = new Enmap({
-  name: "userdatabase",
-  persistent: true,
-  fetchAll: true,
-  autoFetch: true,
-});
+client.userdatabase = new Enmap({ name: "userdatabase" });
 
 (async () => {
   await client.userdatabase.defer;
-  console.log(chalk.green(client.userdatabase.size + " keys loaded"));
+  console.log(chalk.green(client.userdatabase.size + " keys loaded in client.userdatabase"));
   loadFiles();
 })();
 
-client.testenmap = new Enmap({
-  name: "testenmap",
-  persistent: true,
-  fetchAll: true,
-  autoFetch: true,
-});
+client.replies = new Enmap({ name: "replies" });
 
 (async () => {
-  await client.testenmap.defer;
-  console.log(client.testenmap.get('x'));
-  client.testenmap.set('x', 5);
+  await client.replies.defer;
+  console.log(chalk.green(client.replies.size + " keys loaded in client.replies"));
 })();
 //#endregion
 
@@ -244,7 +232,9 @@ client.on('message', message => {
 
   //#region Reply handler
 
-  if (reply[message.content.toLowerCase()]) message.channel.send(reply[message.content.toLowerCase()].response);
+  if (client.replies.get(message.content.toLowerCase())) {
+    message.channel.send(client.replies.get(message.content.toLowerCase()));
+  }
 
   //#endregion
 
