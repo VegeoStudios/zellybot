@@ -40,5 +40,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "!rm",
-  permission: "MANAGE_MESSAGES"
+  permission: "MANAGE_MESSAGES",
+  description: "Prune a number of messages.",
+  usage: "`!!rm <number>`"
 }

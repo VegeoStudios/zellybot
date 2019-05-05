@@ -19,5 +19,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "test",
-  permission: "ADMINISTRATOR"
+  permission: "ADMINISTRATOR",
+  description: "Test command file for debug and development. Do not use.",
+  usage: "`!test`"
 }

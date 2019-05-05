@@ -6,5 +6,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "template",
-  permission: "ADMINISTRATOR"
+  permission: "ADMINISTRATOR",
+  description: "Template command file for duplication. (Does nothing)",
+  usage: "`!template`"
 }

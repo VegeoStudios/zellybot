@@ -12,5 +12,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "!cr",
-  permission: "ADMINISTRATOR"
+  permission: "ADMINISTRATOR",
+  description: "Create an automatic reply entry.",
+  usage: "`!!cr \"<trigger>\" \"<response>\"`"
 }

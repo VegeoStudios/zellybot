@@ -6,5 +6,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "setinfo",
-  permission: "ADMINISTRATOR"
+  permission: "ADMINISTRATOR",
+  description: "Change database information for a user.",
+  usage: "`!setinfo <mention> <path> <value>`"
 }
