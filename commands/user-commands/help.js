@@ -15,19 +15,6 @@ module.exports.run = async (client, message, args) => {
     usermsg.addField('**USER COMMANDS:**', toAdd);
     message.channel.send(usermsg);
   });
-
-  let redirmsg = new Discord.RichEmbed().setTitle('BOT COMMANDS').setColor(embedcolor["help"]);
-
-  fs.readdir('./commands/redirect-commands/', (err, files) => {
-    let toAdd = '';
-    let jsfile = files.filter(f => f.split('.').pop() === 'js');
-    jsfile.forEach((f, i) => {
-      let props = require('../redirect-commands/' + f);
-      toAdd += '**!' + props.help.name + '**\n-' + props.help.description + '\n';
-    });
-    redirmsg.addField('**REDIRECT COMMANDS:**', toAdd);
-    message.channel.send(redirmsg);
-  });
 }
 
 module.exports.help = {

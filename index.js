@@ -34,7 +34,6 @@ client.replies = new Enmap({ name: "replies" });
 //#region LOADING
 client.admincommands = new Discord.Collection();
 client.usercommands = new Discord.Collection();
-client.redirectcommands = new Discord.Collection();
 
 function loadFiles() {
   fs.readdir('./commands/admin-commands/', (err, files) => {
@@ -235,11 +234,6 @@ client.on('message', message => {
       commandfile = client.usercommands.get(command);
       if (commandfile) {
         commandfile.run(client, message, args);
-      } else {
-        commandfile = client.redirectcommands.get(command);
-        if (commandfile) {
-          commandfile.run(client, message, args);
-        }
       }
     }
   }
