@@ -5,7 +5,7 @@ module.exports.run = async (client, message, args) => {
   if (args[0]){
     if (Number.isInteger(parseInt(args[0]))){
       if (args[0] <= 100){
-        message.channel.bulkDelete(args[0]);
+        message.channel.bulkDelete(parseInt(args[0], 10) + 1);
         message.channel.send(new Discord.RichEmbed()
           .setTitle('MODERATION')
           .setColor(embedcolor["moderation"])
