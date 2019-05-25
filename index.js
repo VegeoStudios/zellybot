@@ -1,4 +1,4 @@
-//Created by Vegeo Studios for the Bro Zelly Gaming Discord server.
+//Created by Vegeo Studios for the Bro Zelly Gaming Discord server
 
 const Discord = require('discord.js');
 const fs = require('fs');
@@ -34,6 +34,7 @@ client.replies = new Enmap({ name: "replies" });
 //#region LOADING
 client.admincommands = new Discord.Collection();
 client.usercommands = new Discord.Collection();
+client.funcommands = new Discord.Collection();
 
 function loadFiles() {
   fs.readdir('./commands/admin-commands/', (err, files) => {
@@ -70,6 +71,26 @@ function loadFiles() {
 
     jsfile.forEach((f, i) => {
       let props = require('./commands/user-commands/' + f);
+      console.log('-' + f + chalk.green(' loaded'));
+      client.usercommands.set(props.help.name, props);
+    });
+    //#endregion
+  });
+
+  fs.readdir('./commands/fun-commands/', (err, files) => {
+    //#region FUN COMMANDS
+    if (err) console.log(err);
+    
+    let jsfile = files.filter(f => f.split('.').pop() === 'js');
+    if (jsfile.length <= 0){
+      console.log(chalk.red('ERROR'), 'Fun commands not found');
+      return;
+    }
+    
+    console.log(chalk.yellow.bold('FUN COMMANDS:'));
+
+    jsfile.forEach((f, i) => {
+      let props = require('./commands/fun-commands/' + f);
       console.log('-' + f + chalk.green(' loaded'));
       client.usercommands.set(props.help.name, props);
     });

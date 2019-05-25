@@ -14,7 +14,7 @@ module.exports.run = async (client, message, args) => {
 
   //message.channel.send(message.guild.emojis.first().identifier)
 
-  client.userinfo.destroy();
+  message.channel.send('<a:Fox_heart:482199194296123412>');
 }
 
 module.exports.help = {
