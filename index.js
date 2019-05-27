@@ -285,7 +285,7 @@ client.on('message', message => {
 client.on('guildMemberAdd', member => {
   if (member.guild.channels.find(ch => ch.name === 'guestbook') == null) return;
   const channel = member.guild.channels.find(ch => ch.name === 'guestbook');
-  if (channel) channel.send(new Discord.RichEmbed().setTitle('WELCOME').setColor(embedcolor["welcome"]).setDescription('<@' + member.id + '> has joined the server'));
+  if (channel) channel.send(new Discord.RichEmbed().setTitle('WELCOME').setColor(embedcolor["welcome"]).setDescription(member + ' **(' + member.user.tag + ')** has joined the server'));
   const channel1 = member.guild.channels.find(ch => ch.name === 'welcome');
   if (channel1) channel1.send(member + ' Welcome to BZG, aka Bro Zelly Gaming! <:BZGLOGOTEMPLATE:353915937822605312>\n\nBe sure you go by <#465885568321060865> to learn how we do things around here. React in each category for the roles you want.  If you ever wish to leave a role, just un-click the reaction. Come say hello in <#348104362180083723>!');
 });
