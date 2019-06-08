@@ -1,4 +1,4 @@
-//Created by Vegeo Studios for the Bro Zelly Gaming Discord server
+//Created by Vegeo Studios for the Bro Zelly Gaming Discord server.
 
 const Discord = require('discord.js');
 const fs = require('fs');

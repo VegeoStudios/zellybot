@@ -23,7 +23,7 @@ module.exports.run = async (client, message, args) => {
 
     client.petstimer.add(message.author.id);
     setTimeout(() => {
-      client.petstimer.delete(msg.author.id);
+      client.petstimer.delete(message.author.id);
     }, 60000);
   }
 }

@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
 
     client.snaxtimer.add(message.author.id);
     setTimeout(() => {
-      client.snaxtimer.delete(msg.author.id);
+      client.snaxtimer.delete(message.author.id);
     }, 60000);
   }
 }
