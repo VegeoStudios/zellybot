@@ -12,6 +12,9 @@ let story = '';
 
 let logchannel;
 
+client.petstimer = new Set();
+client.snaxtimer = new Set();
+
 //#region ENMAP LOADING
 const Enmap = require('enmap');
 
@@ -409,7 +412,7 @@ client.on('roleDelete', role => {
   if (logchannel) logchannel.send(new Discord.RichEmbed()
     .setTitle('ROLE DELETED')
     .setColor(embedcolor["log"]["role"])
-    .setDescription('<@' + role.id + '> was created')
+    .setDescription('<@' + role.id + '> was deleted')
     .setTimestamp());
 });
 
