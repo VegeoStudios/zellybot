@@ -7,22 +7,24 @@ module.exports.run = async (client, message, args) => {
     return;
   }
 
-  if (args[1].toLowerCase() == null) {
-    message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('Make sure to include a path'));
+  let key = message.mentions.members.first().id;
+
+  if (args[1] == null) {
+    message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('**KEY:**\n`' + key + '`\n**VALUE:**```\n' + JSON.stringify(client.userdatabase.get(key), null, 2) + '\n```'));
+    //message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('Make sure to add a path to search'));
     return;
   }
 
-  let key = message.mentions.members.first().id;
   let path = args[1].toLowerCase();
 
   if (client.userdatabase.has(key)) {
     if (client.userdatabase.has(key, path)) {
-        message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('**KEY:**\n`' + key + '`\n**PROP:**\n`' + path + '`\n**VALUE:**\n`' + client.userdatabase.get(key, path) + '`'));
+      message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('**KEY:**\n`' + key + '`\n**PROP:**\n`' + path + '`\n**VALUE:**\n```' + JSON.stringify(client.userdatabase.get(key, path), null, 2) + '\n```'));
     } else {
-        message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('That property doesn\'t exist.'));
+      message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('That property doesn\'t exist.'));
     }
   } else {
-      message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('That user doesn\'t exist or you forgot to mention a member of the server.'));
+    message.channel.send(new Discord.RichEmbed().setTitle('GET USER INFO').setColor(embedcolor["bot"]).setDescription('That user doesn\'t exist or you forgot to mention a member of the server.'));
   }
 }
 

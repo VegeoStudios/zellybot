@@ -2,19 +2,9 @@ const Discord = require('discord.js');
 const rank = require('./../../ranks.json')
 
 module.exports.run = async (client, message, args) => {
-  //console.log(client.userdatabase);
-
-  // Object.keys(rank).forEach(element => {
-  //     console.log(element);
-  // });
-
-  //message.channel.send('test');
-  
-  //message.channel.send(new Discord.RichEmbed().setTitle('**HEARTBEAT**').setDescription('test'));
-
-  //message.channel.send(message.guild.emojis.first().identifier)
-
-  message.channel.send('<a:Fox_heart:482199194296123412>');
+  for (const key of client.userdatabase.indexes) {
+    client.userdatabase.set(key, true, "levelinfo.ping");
+  }
 }
 
 module.exports.help = {

@@ -18,7 +18,7 @@ client.snaxtimer = new Set();
 //#region ENMAP LOADING
 const Enmap = require('enmap');
 
-client.userdatabase = new Enmap({ name: "userdatabase" });
+client.userdatabase = new Enmap({ name: "userdatabase" , ensureProps: true });
 
 (async () => {
   await client.userdatabase.defer;
@@ -204,7 +204,7 @@ client.on('message', message => {
     userid: key,
     username: message.author.username,
     levelinfo: {
-      xp: 0, totalxp: 0, level: 1
+      xp: 0, totalxp: 0, level: 1, ping: true
     },
     cardinfo: {
       background: './images/background.jpg',
@@ -222,11 +222,16 @@ client.on('message', message => {
   if (curxp >= 5 * (curlvl ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100){
     client.userdatabase.set(key, client.userdatabase.get(key, "levelinfo.xp") - (5 * (curlvl ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100), "levelinfo.xp");
     client.userdatabase.inc(key, "levelinfo.level");
-    message.guild.channels.find(ch => ch.id === '372536951460593675').send(new Discord.RichEmbed()
+    let embed = new Discord.RichEmbed()
       .setTitle('XP LEVELING')
       .setColor(embedcolor["xp"])
       .addField(message.member.displayName + ' has leveled up!', 'You are now level ' + client.userdatabase.get(key, "levelinfo.level"), true)
-      .setFooter(((5 * (client.userdatabase.get(key, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100) - client.userdatabase.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userdatabase.get(key, "levelinfo.level") + 1) + '!'));
+      .setDescription(((5 * (client.userdatabase.get(key, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100) - client.userdatabase.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userdatabase.get(key, "levelinfo.level") + 1) + '!');
+    if (client.userdatabase.get(key, "levelinfo.ping")) {
+      embed.setFooter('To disable levelup notification, type `!toggleping`');
+      message.guild.channels.find(ch => ch.id === '372536951460593675').send(message.member);
+    }
+    message.guild.channels.find(ch => ch.id === '372536951460593675').send(embed);
     Object.keys(ranks).forEach(element => {
       if (client.userdatabase.get(key, "levelinfo.level").toString() === element) message.member.addRole(message.guild.roles.find(role => role.name === ranks[element]));
     });
