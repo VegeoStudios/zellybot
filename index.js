@@ -228,8 +228,10 @@ client.on('message', message => {
       .addField(message.member.displayName + ' has leveled up!', 'You are now level ' + client.userdatabase.get(key, "levelinfo.level"), true)
       .setDescription(((5 * (client.userdatabase.get(key, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100) - client.userdatabase.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userdatabase.get(key, "levelinfo.level") + 1) + '!');
     if (client.userdatabase.get(key, "levelinfo.ping")) {
-      embed.setFooter('To disable levelup notification, type `!toggleping`');
+      embed.setFooter('To disable levelup notifications, type `!toggleping`');
       message.guild.channels.find(ch => ch.id === '372536951460593675').send(message.member);
+    } else {
+      embed.setFooter('To enable levelup notifications, type `!toggleping`');
     }
     message.guild.channels.find(ch => ch.id === '372536951460593675').send(embed);
     Object.keys(ranks).forEach(element => {
