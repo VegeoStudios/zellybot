@@ -227,9 +227,9 @@ client.on('message', message => {
       .setColor(embedcolor["xp"])
       .addField(message.member.displayName + ' has leveled up!', 'You are now level ' + client.userdatabase.get(key, "levelinfo.level"), true)
       .setDescription(((5 * (client.userdatabase.get(key, "levelinfo.level") ** 2) + 50 * client.userdatabase.get(key, "levelinfo.level") + 100) - client.userdatabase.get(key, "levelinfo.xp")) + ' xp to reach level ' + (client.userdatabase.get(key, "levelinfo.level") + 1) + '!');
-    if (client.userdatabase.get(key, "levelinfo.ping")) {
+    if (client.userdatabase.get(key, "levelinfo.ping") == true) {
       embed.setFooter('To disable levelup notifications, type `!toggleping`');
-      message.guild.channels.find(ch => ch.id === '372536951460593675').send(message.member);
+      message.guild.channels.find(ch => ch.id === '372536951460593675').send('*' + message.member + '*');
     } else {
       embed.setFooter('To enable levelup notifications, type `!toggleping`');
     }
@@ -333,11 +333,11 @@ client.on('raw', async event => {
 //#region REACTION EVENT
 client.on('messageReactionAdd', (reaction, user) => {
   if (reaction.message.channel.id === '567102648751489024' && user.id === '235202689544355840') reaction.message.delete();
-  if (reaction.message.id == '465887198605082644') reaction.message.guild.members.get(user.id).addRole('496742783990890518');
+  if (reaction.message.id == '608838730694000671') reaction.message.guild.members.get(user.id).addRole('496742783990890518');
 });
 
 client.on('messageReactionRemove', (reaction, user) => {
-  if (reaction.message.id == '465887198605082644') reaction.message.guild.members.get(user.id).removeRole('496742783990890518');
+  if (reaction.message.id == '608838730694000671') reaction.message.guild.members.get(user.id).removeRole('496742783990890518');
 });
 //#endregion
 
