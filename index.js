@@ -330,14 +330,18 @@ client.on('raw', async event => {
 });
 //#endregion
 
-//#region REACTION EVENT
+//#region REACTION EVENT.
 client.on('messageReactionAdd', (reaction, user) => {
   if (reaction.message.channel.id === '567102648751489024' && user.id === '235202689544355840') reaction.message.delete();
   if (reaction.message.id == '608838730694000671') reaction.message.guild.members.get(user.id).addRole('496742783990890518');
+  if (reaction.message.id == '465887198605082644') reaction.message.guild.members.get(user.id).addRole('496742783990890518');
+  if (reaction.message.id == '609185018178437133') reaction.message.guild.members.get(user.id).addRole('459372663421403136');
 });
 
 client.on('messageReactionRemove', (reaction, user) => {
   if (reaction.message.id == '608838730694000671') reaction.message.guild.members.get(user.id).removeRole('496742783990890518');
+  if (reaction.message.id == '465887198605082644') reaction.message.guild.members.get(user.id).removeRole('496742783990890518');
+  if (reaction.message.id == '609185018178437133') reaction.message.guild.members.get(user.id).removeRole('459372663421403136');
 });
 //#endregion
 
@@ -350,108 +354,64 @@ client.on('ready', () => {
 });
 
 client.on('channelCreate', channel => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('CHANNEL CREATED')
-    .setColor(embedcolor["log"]["channel"])
-    .setDescription('<#' + channel.id + '> was created')
-    .setTimestamp());
+  if (logchannel) logchannel.send('**CHANNEL CREATED** <#' + channel.id + '> was created');
 });
 
 client.on('channelDelete', channel => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('CHANNEL DELETED')
-    .setColor(embedcolor["log"]["channel"])
-    .setDescription('<#' + channel.id + '> was deleted')
-    .setTimestamp());
+  if (logchannel) logchannel.send('**CHANNEL DELETEE** <#' + channel.id + '> was deleted');
 });
 
 client.on('channelPinsUpdate', channel => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('PIN UPDATED')
-    .setColor(embedcolor["log"]["channel"])
-    .setDescription('A pin was updated in <#' + channel.id + '>')
-    .setTimestamp());
+  if (logchannel) logchannel.send('**PIN UPDATED** A pin was updated in <#' + channel.id + '>');
 });
 
 client.on('emojiCreate', emoji => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('EMOJI CREATED')
-    .setColor(embedcolor["log"]["emoji"])
-    .setDescription('An emoji was created')
-    .setThumbnail(emoji.url)
-    .setTimestamp());
+  if (logchannel) logchannel.send('**EMOJI CREATED** An emoji was created');
 });
 
 client.on('emojiDelete', emoji => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('EMOJI DELETED')
-    .setColor(embedcolor["log"]["emoji"])
-    .setDescription('An emoji was deleted')
-    .setThumbnail(emoji.url)
-    .setTimestamp());
+  if (logchannel) logchannel.send('**EMOJI DELETED** An emoji was deleted');
 });
 
 client.on('guildBanAdd', (guild, user) => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('USER BANNED')
-    .setColor(embedcolor["log"]["mod"])
-    .setDescription(user.tag + ' was banned')
-    .setTimestamp());
+  if (logchannel) logchannel.send('**USER BANNED** ' + user.tag + ' was banned');
 });
 
 client.on('guildBanRemove', (guild, user) => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('USER UNBANNED')
-    .setColor(embedcolor["log"]["mod"])
-    .setDescription(user.tag + ' was unbanned')
-    .setTimestamp());
+  if (logchannel) logchannel.send('**USER UNBANNED** ' + user.tag + ' was unbanned');
 });
 
 client.on('roleCreate', role => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('ROLE CREATED')
-    .setColor(embedcolor["log"]["role"])
-    .setDescription('<@' + role.id + '> was created')
-    .setTimestamp());
+  if (logchannel) logchannel.send('**ROLE CREATED** A role (<@' + role.id + '>) was created');
 });
 
 client.on('roleDelete', role => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('ROLE DELETED')
-    .setColor(embedcolor["log"]["role"])
-    .setDescription('<@' + role.id + '> was deleted')
-    .setTimestamp());
+  if (logchannel) logchannel.send('**ROLE DELETED** A role (<@' + role.id + '>) was deleted');
 });
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
   if (logchannel) if (oldMember.roles.size > newMember.roles.size) {
-    logchannel.send(new Discord.RichEmbed()
-      .setTitle('ROLE REMOVED')
-      .setColor(embedcolor["log"]["role"])
-      .setDescription('<@' + newMember.id + '> was removed of the role ' + oldMember.roles.find(role => !newMember.roles.has(role.id)))
-      .setTimestamp());
+    if (logchannel) logchannel.send('**ROLE REMOVED** <@' + newMember.id + '> was removed of the role **' + oldMember.roles.find(role => !newMember.roles.has(role.id)) + '**');
   } else if (oldMember.roles.size < newMember.roles.size) {
-    logchannel.send(new Discord.RichEmbed()
-      .setTitle('ROLE ADDED')
-      .setColor(embedcolor["log"]["role"])
-      .setDescription('<@' + newMember.id + '> was given the role ' + newMember.roles.find(role => !oldMember.roles.has(role.id)))
-      .setTimestamp());
+    logchannel.send('**ROLE ADDED** <@' + newMember.id + '> was given the role **' + newMember.roles.find(role => !oldMember.roles.has(role.id)) + '**');
   }
 
   if (oldMember.nickname != newMember.nickname) {
-    logchannel.send(new Discord.RichEmbed()
-      .setTitle('NICKNAME CHANGED')
-      .setColor(embedcolor["log"]["nickname"])
-      .setDescription('<@' + newMember.id + '> changed their nickname from ' + oldMember.nickname + ' to ' + newMember.nickname)
-      .setTimestamp());
+    logchannel.send('**NICKNAME CHANGED** <@' + newMember.id + '> changed their nickname from ' + oldMember.nickname + ' to ' + newMember.nickname);
   }
 });
+//#endregion
 
-client.on('userNoteUpdate', (user, oldNote, newNote) => {
-  if (logchannel) logchannel.send(new Discord.RichEmbed()
-    .setTitle('USER NOT UPDATED')
-    .setColor(embedcolor["log"]["note"])
-    .setDescription('<@' + role.id + '>\'s note was updated from:\n' + oldNote + '\nto:\n' + newNote)
-    .setTimestamp());
+//#region AUTOASSIGN ROLES
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+  const ytrole = 608025501730209821;
+  const twrole = 605799984092282886;
+  const nbrole = 585967221117943810;
+
+  if (logchannel) if (oldMember.roles.size > newMember.roles.size) {
+    if (!newMember.roles.has(ytrole) && !newMember.roles.has(twrole) && !newMember.roles.has(nbrole)) newMember.removeRole('612997839978627092');
+  } else if (oldMember.roles.size < newMember.roles.size) {
+    if (newMember.roles.has(ytrole) || newMember.roles.has(twrole) || newMember.roles.has(nbrole)) newMember.addRole('612997839978627092');
+  }
 });
 //#endregion
