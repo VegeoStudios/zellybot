@@ -404,14 +404,17 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 
 //#region AUTOASSIGN ROLES
 client.on('guildMemberUpdate', (oldMember, newMember) => {
-  const ytrole = 608025501730209821;
-  const twrole = 605799984092282886;
-  const nbrole = 585967221117943810;
+  const ytrole = '608025501730209821';
+  const twrole = '605799984092282886';
+  const nbrole = '585967221117943810';
+  const testrole = '632078026640982029';
 
-  if (logchannel) if (oldMember.roles.size > newMember.roles.size) {
-    if (!newMember.roles.has(ytrole) && !newMember.roles.has(twrole) && !newMember.roles.has(nbrole)) newMember.removeRole('612997839978627092');
-  } else if (oldMember.roles.size < newMember.roles.size) {
-    if (newMember.roles.has(ytrole) || newMember.roles.has(twrole) || newMember.roles.has(nbrole)) newMember.addRole('612997839978627092');
+  if (oldMember.roles.size > newMember.roles.size) {
+    if (!newMember.roles.has(ytrole) && !newMember.roles.has(twrole) && !newMember.roles.has(nbrole) && !newMember.roles.has(testrole)) newMember.removeRole('612997839978627092');
+  }
+  
+  if (oldMember.roles.size < newMember.roles.size) {
+    if (newMember.roles.has(ytrole) || newMember.roles.has(twrole) || newMember.roles.has(nbrole) || newMember.roles.has(testrole)) newMember.addRole('612997839978627092');
   }
 });
 //#endregion
